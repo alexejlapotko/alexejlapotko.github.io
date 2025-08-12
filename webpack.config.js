@@ -1,13 +1,14 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  entry: { main: './cube.css' },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
+    filename: '[name].js',
     clean: true,
   },
   module: {
@@ -19,11 +20,13 @@ module.exports = {
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css',
+    new RemoveEmptyScriptsPlugin(),
+    new MiniCssExtractPlugin({ filename: 'cube.css' }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'index.html' },
+        { from: 'cube.js' },
+      ],
     }),
   ],
 };

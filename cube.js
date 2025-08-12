@@ -155,7 +155,7 @@ function endRotation() {
 	rotCubies = [];
 }
 
-export function rotate(move) {
+function rotate(move) {	
 	rotType = move[0];
 	rotation = rotations[rotType];
 	rotBack = (move[1] == "'");

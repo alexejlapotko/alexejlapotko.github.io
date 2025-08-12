@@ -8,13 +8,14 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "cssnano": "^5.1.15",
-    "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.3.3",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-remove-empty-scripts": "^0.7.3"
   }
 }
