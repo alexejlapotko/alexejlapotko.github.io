@@ -6,7 +6,7 @@ on:
     branches: [main, master]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
   pull-requests: write
@@ -19,30 +19,36 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
       - name: Create preview directory
         run: |
-          mkdir -p preview/pr-${{ github.event.number }}
-          cp -r * preview/pr-${{ github.event.number }}/ 2>/dev/null || true
-          # Remove .github directory from preview
-          rm -rf preview/pr-${{ github.event.number }}/.github
+          mkdir -p preview-temp
+          # Copy only the necessary files (not .github directory)
+          cp *.html *.css *.js preview-temp/ 2>/dev/null || true
+          cp -r assets preview-temp/ 2>/dev/null || true
+          cp -r images preview-temp/ 2>/dev/null || true
+          cp -r styles preview-temp/ 2>/dev/null || true
+          cp -r scripts preview-temp/ 2>/dev/null || true
           
       - name: Checkout gh-pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Update gh-pages with preview
         run: |
           # Create pr-previews directory if it doesn't exist
-          mkdir -p gh-pages/pr-previews
+          mkdir -p gh-pages/pr-previews/pr-${{ github.event.number }}
           
           # Copy preview files
-          cp -r preview/pr-${{ github.event.number }} gh-pages/pr-previews/
+          cp -r preview-temp/* gh-pages/pr-previews/pr-${{ github.event.number }}/
           
           # Create or update index file for previews
           cat > gh-pages/pr-previews/index.html << 'EOF'
@@ -143,6 +149,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Remove preview
         run: |

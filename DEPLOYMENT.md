@@ -24,6 +24,11 @@ This repository is configured to automatically create preview deployments for ev
 3. Check "Allow GitHub Actions to create and approve pull requests"
 4. Click "Save"
 
+**Important**: If you're using a personal repository (like `username.github.io`), you may need to:
+- Go to Settings → Developer settings → Personal access tokens
+- Create a token with `repo` and `workflow` permissions
+- Add it as a repository secret named `GITHUB_TOKEN` (though this is usually automatic)
+
 ### 3. Create gh-pages Branch (if it doesn't exist)
 ```bash
 # Create an empty gh-pages branch
