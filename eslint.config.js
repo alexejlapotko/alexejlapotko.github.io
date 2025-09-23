@@ -35,7 +35,7 @@ export default [
 			"linebreak-style": ["error", "unix"],
 			"quotes": ["warn", "double", { "allowTemplateLiterals": true }],
 			"semi": ["error", "always"],
-			"no-unused-vars": ["warn", { "args": "none" }],
+			"no-unused-vars": ["warn", { "args": "none", "varsIgnorePattern": "^rotate$" }],
 			"no-console": "off",
 			"no-undef": "error",
 			"no-redeclare": "warn",

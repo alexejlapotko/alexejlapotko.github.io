@@ -30,8 +30,7 @@ function updateColoring(newColoring) {
 	
 /* rotation */
 
-// Rotation configurations - currently unused but kept for future functionality
-/* const rotations = {
+const rotations = {
 	"f" : {
 		"cubies" : ["flu", "fld", "fru", "frd"],
 		"recolor": {
@@ -89,25 +88,23 @@ function updateColoring(newColoring) {
 			"rbd": "dbl", "dbr": "lbd", "dbl": "lbu", "lbd": "ubl"
 		}
 	}
-}; */
+};
 
 let rotation;
-// let rotType; // Currently unused
+let rotType;
 let rotBack;
-// let rotating = false; // Currently unused
+let rotating = false;
 let rotCubies = [];
 
-// Currently unused but kept for future functionality
-// function getCubie(cubieName) {
-// 	return cube.getElementsByClassName(cubieName)[0];
-// }
+function getCubie(cubieName) {
+	return cube.getElementsByClassName(cubieName)[0];
+}
 
-// Currently unused but kept for future functionality
-// function attachToPlane() {
-// 	for (let index = 0; index < rotCubies.length; index++) {
-// 		plane.appendChild(rotCubies[index]);
-// 	}
-// }
+function attachToPlane() {
+	for (let index = 0; index < rotCubies.length; index++) {
+		plane.appendChild(rotCubies[index]);
+	}
+}
 
 function detachToPlane() {
 	for (let index = 0; index < rotCubies.length; index++) {
@@ -115,16 +112,15 @@ function detachToPlane() {
 	}
 }
 
-// Currently unused but kept for future functionality
-// function startRotation() {
-// 	rotCubies = [];
-// 	for (let index = 0; index < rotation.cubies.length; index++) {rotCubies.push(getCubie(rotation.cubies[index]));}
+function startRotation() {
+	rotCubies = [];
+	for (let index = 0; index < rotation.cubies.length; index++) {rotCubies.push(getCubie(rotation.cubies[index]));}
 
-// 	rotating = true;
-// 	
-// 	attachToPlane();
-// 	plane.className = `moving ${rotType}${rotBack ? "-back" : ""}`;
-// }
+	rotating = true;
+	
+	attachToPlane();
+	plane.className = `moving ${rotType}${rotBack ? "-back" : ""}`;
+}
 
 function clone(obj) {
 	if(obj == null || typeof(obj) != "object") {return obj;}
@@ -153,19 +149,18 @@ function endRotation() {
 	
 	updateColoring(makeNewColoring());
 	
-	// rotating = false; // Currently unused
+	rotating = false;
 	rotCubies = [];
 }
 
-// Rotation function - currently unused but kept for future functionality
-// function rotate(move) {	
-// 	rotType = move[0];
-// 	rotation = rotations[rotType];
-// 	rotBack = (move[1] === "'");
-// 	
-// 	console.log(`rotation ${move}`);
-// 	if (!rotating) startRotation(move);
-// }
+function rotate(move) {	
+	rotType = move[0];
+	rotation = rotations[rotType];
+	rotBack = (move[1] === "'");
+	
+	console.log(`rotation ${move}`);
+	if (!rotating) startRotation(move);
+}
 
 /* initialization */
 
