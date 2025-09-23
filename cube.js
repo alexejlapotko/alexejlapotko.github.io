@@ -233,3 +233,41 @@ function init() {
 }
 
 init();
+
+/* turning */
+
+let turning = false;
+let curX;
+let curY;
+let deltaX = 0;
+let deltaY = 0;
+
+// eslint-disable-next-line no-unused-vars
+function mousedown(e) {
+	turning = true;
+	if (typeof curX !== "undefined") {
+		deltaX = curX - e.pageX;
+		deltaY = curY - e.pageY;
+	}
+}
+
+// eslint-disable-next-line no-unused-vars
+function mouseup() {
+	turning = false;
+}
+
+// eslint-disable-next-line no-unused-vars
+function mousemove(e) {
+	if (turning) {
+		curX = e.pageX;
+		curY = e.pageY;
+		
+		const x = -(e.pageY - deltaY) * 0.7,
+			y = -(e.pageX - deltaX) * 0.7;
+		turn(x, y);
+	}
+}
+
+function turn(newX, newY) {
+	cube.style.webkitTransform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
+}
