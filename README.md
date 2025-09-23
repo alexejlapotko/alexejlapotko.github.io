@@ -21,18 +21,40 @@ A fully interactive 3D Rubik's Cube implementation built with pure JavaScript an
 
 ### Prerequisites
 - Modern web browser with CSS3 transform support
-- Node.js and pnpm (for linting, optional)
+- Node.js and pnpm (for development and building)
+
+### Quick Start
+```bash
+# Install dependencies
+pnpm install
+
+# Build CSS (required for first run)
+pnpm run build
+
+# For development (watches CSS changes)
+pnpm run dev
+```
+
+### CSS Build Process
+This project uses PostCSS with Autoprefixer for modern CSS support:
+- **Source**: `cube.css` (modern CSS with custom properties)
+- **Output**: `dist/cube.css` (browser-compatible, minified)
+- **Features**: Automatic vendor prefixing, CSS custom properties, responsive design
 
 ### Available Scripts
 ```bash
-# Lint JavaScript code
-pnpm run lint
+# Development
+pnpm run dev          # Watch CSS changes and rebuild automatically
+pnpm run css:build    # Build CSS once
+pnpm run css:watch    # Watch CSS changes (same as dev)
 
-# Auto-fix linting issues
-pnpm run lint:fix
+# Production
+pnpm run build        # Build all assets for production
 
-# Check ESLint configuration
-pnpm run lint:check
+# Code Quality
+pnpm run lint         # Lint JavaScript code
+pnpm run lint:fix     # Auto-fix linting issues
+pnpm run lint:check   # Check ESLint configuration
 ```
 
 
