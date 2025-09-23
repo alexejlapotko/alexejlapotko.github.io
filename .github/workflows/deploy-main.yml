@@ -1,0 +1,67 @@
+name: Deploy Main Branch to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:  # Allow manual triggering
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Prepare deployment files
+        run: |
+          # Create a temporary directory for deployment
+          mkdir -p _site
+          
+          # Copy all necessary files to _site directory
+          cp *.html _site/ 2>/dev/null || true
+          cp *.css _site/ 2>/dev/null || true  
+          cp *.js _site/ 2>/dev/null || true
+          
+          # Copy common directories if they exist
+          cp -r assets _site/ 2>/dev/null || true
+          cp -r images _site/ 2>/dev/null || true
+          cp -r styles _site/ 2>/dev/null || true
+          cp -r scripts _site/ 2>/dev/null || true
+          cp -r fonts _site/ 2>/dev/null || true
+          cp -r media _site/ 2>/dev/null || true
+          
+          # Ensure we have an index.html
+          if [ ! -f "_site/index.html" ]; then
+            echo "Error: No index.html found in the repository root"
+            exit 1
+          fi
+          
+          echo "Files prepared for deployment:"
+          ls -la _site/
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
