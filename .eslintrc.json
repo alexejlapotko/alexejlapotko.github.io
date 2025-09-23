@@ -1,13 +1,14 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "es2022": true
   },
   "extends": [
     "eslint:recommended"
   ],
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2022,
     "sourceType": "script"
   },
   "rules": {
@@ -20,12 +21,30 @@
     "no-undef": "error",
     "no-redeclare": "warn",
     "no-implicit-globals": "off",
-    "prefer-const": "off",
-    "no-var": "off",
-    "no-prototype-builtins": "warn",
     "eqeqeq": ["warn", "smart"],
     "curly": ["warn", "multi-line"],
-    "brace-style": ["warn", "1tbs", { "allowSingleLine": true }]
+    "brace-style": ["warn", "1tbs", { "allowSingleLine": true }],
+    
+    // ES6+ modernization rules
+    "prefer-const": "error",
+    "no-var": "error",
+    "prefer-arrow-callback": ["error", { "allowNamedFunctions": false }],
+    "arrow-spacing": "error",
+    "prefer-template": "error",
+    "template-curly-spacing": "error",
+    "object-shorthand": ["error", "always"],
+    "prefer-destructuring": ["error", {
+      "array": false,
+      "object": true
+    }, {
+      "enforceForRenamedProperties": false
+    }],
+    "prefer-spread": "error",
+    "prefer-rest-params": "error",
+    "no-useless-concat": "error",
+    "prefer-numeric-literals": "error",
+    "symbol-description": "error",
+    "prefer-object-spread": "error"
   },
   "globals": {
     "console": "readonly",

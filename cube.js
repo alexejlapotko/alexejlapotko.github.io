@@ -1,36 +1,36 @@
-var container = document.getElementById("container"),
-	cube,
-	plane;
+const container = document.getElementById("container");
+let cube;
+let plane;
 
-var cubies = ["flu", "fld", "fru", "frd", "blu", "bld", "bru", "brd"];
-var sidesPositions = ["f", "b", "l", "r", "u", "d"];
+const cubies = ["flu", "fld", "fru", "frd", "blu", "bld", "bru", "brd"];
+const sidesPositions = ["f", "b", "l", "r", "u", "d"];
 	
 /* coloring */
 	
-var coloring = {};
+const coloring = {};
 
 function getSide(sideName) {
-	return cube.getElementsByClassName(sideName + " side")[0];
+	return cube.getElementsByClassName(`${sideName} side`)[0];
 }
 
 function updateColor(sideName, newColor) {
-	var side = getSide(sideName);
-	side.classList.remove(coloring[sideName] + "-color");
-	side.classList.add(newColor + "-color");
+	const side = getSide(sideName);
+	side.classList.remove(`${coloring[sideName]}-color`);
+	side.classList.add(`${newColor}-color`);
 	coloring[sideName] = newColor;
 }
 
 
 
 function updateColoring(newColoring) {
-	for (var side in newColoring)
-		if (coloring[side] != newColoring[side])
-			updateColor(side, newColoring[side]);
+	for (const side in newColoring) {
+		if (coloring[side] !== newColoring[side]) {updateColor(side, newColoring[side]);}
+	}
 }
 	
 /* rotation */
 
-var rotations = {
+const rotations = {
 	"f" : {
 		"cubies" : ["flu", "fld", "fru", "frd"],
 		"recolor": {
@@ -56,7 +56,7 @@ var rotations = {
 		}	
 	},
 	"x": {
-		"cubies": cubies,
+		cubies,
 		"recolor": {
 			"lbu": "lfu", "lfu": "lfd", "lfd": "lbd", "lbd": "lbu",
 			"bld": "ubl", "blu": "ufl", "ubl": "flu", "ufl": "fld",
@@ -67,7 +67,7 @@ var rotations = {
 		}
 	},
 	"y": {
-		"cubies": cubies,
+		cubies,
 		"recolor": {
 			"ubl": "ubr", "ubr": "ufr", "ufr": "ufl", "ufl": "ubl",
 			"rbu": "fru", "rfu": "flu", "fru": "lfu", "flu": "lbu",
@@ -78,7 +78,7 @@ var rotations = {
 		}
 	},
 	"z": {
-		"cubies": cubies,
+		cubies,
 		"recolor": {
 			"flu": "fru", "fru": "frd", "frd": "fld", "fld": "flu",
 			"lfu": "ufr", "ufl": "rfu", "ufr": "rfd", "rfu": "dfr",
@@ -90,58 +90,56 @@ var rotations = {
 	}
 };
 
-var rotation,
-	rotType, rotBack,
-	rotating = false,
-	rotCubies = [];
+let rotation;
+let rotType;
+let rotBack;
+let rotating = false;
+let rotCubies = [];
 
 function getCubie(cubieName) {
 	return cube.getElementsByClassName(cubieName)[0];
 }
 
 function attachToPlane() {
-	for (var index = 0; index < rotCubies.length; index++) {
+	for (let index = 0; index < rotCubies.length; index++) {
 		plane.appendChild(rotCubies[index]);
 	}
 }
 
 function detachToPlane() {
-	for (var index = 0; index < rotCubies.length; index++) {
+	for (let index = 0; index < rotCubies.length; index++) {
 		cube.appendChild(rotCubies[index]);
 	}
 }
 
 function startRotation() {
 	rotCubies = [];
-	for (var index = 0; index < rotation.cubies.length; index++)
-		rotCubies.push(getCubie(rotation.cubies[index]));
+	for (let index = 0; index < rotation.cubies.length; index++) {rotCubies.push(getCubie(rotation.cubies[index]));}
 
 	rotating = true;
 	
 	attachToPlane();
-	plane.className = "moving " + rotType + (rotBack ? "-back" : "");
+	plane.className = `moving ${rotType}${rotBack ? "-back" : ""}`;
 }
 
 function clone(obj) {
-    if(obj == null || typeof(obj) != 'object')
-        return obj;
+	if(obj == null || typeof(obj) != "object") {return obj;}
 
-    var temp = obj.constructor(); // changed
+	const temp = obj.constructor(); // changed
 
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key)) {
-            temp[key] = clone(obj[key]);
-        }
-    }
-    return temp;
+	for(const key in obj) {
+		if(Object.prototype.hasOwnProperty.call(obj, key)) {
+			temp[key] = clone(obj[key]);
+		}
+	}
+	return temp;
 }
 
 function makeNewColoring() {
-	var newColoring = clone(coloring);
-	for (var side in rotation.recolor)
-	if (!rotBack)
-		newColoring[rotation.recolor[side]] = coloring[side];
-	else newColoring[side] = coloring[rotation.recolor[side]];
+	const newColoring = clone(coloring);
+	for (const side in rotation.recolor) {
+		if (!rotBack) {newColoring[rotation.recolor[side]] = coloring[side];} else newColoring[side] = coloring[rotation.recolor[side]];
+	}
 	return newColoring;
 }
 
@@ -158,9 +156,9 @@ function endRotation() {
 function rotate(move) {	
 	rotType = move[0];
 	rotation = rotations[rotType];
-	rotBack = (move[1] == "'");
+	rotBack = (move[1] === "'");
 	
-	console.log("rotation " + move);
+	console.log(`rotation ${move}`);
 	if (!rotating) startRotation(move);
 }
 
@@ -168,23 +166,22 @@ function rotate(move) {
 
 function getSideName(cubieName, sidePosition) {
 	if (cubieName.indexOf(sidePosition) > -1) {
-		var res = cubieName.replace(sidePosition, "");
+		const res = cubieName.replace(sidePosition, "");
 		return sidePosition + res;
 	}
 }
 
 function createSide(cubie, cubieName, sidePosition) {
-	var sideName = getSideName(cubieName, sidePosition);
+	const sideName = getSideName(cubieName, sidePosition);
 
-	var side = document.createElement("div");
+	const side = document.createElement("div");
 	
-	if (typeof sideName !== "undefined")
-		side.className = sideName;
+	if (typeof sideName !== "undefined") {side.className = sideName;}
 	side.classList.add("side");
-	side.classList.add(sidePosition + "-plane");
+	side.classList.add(`${sidePosition}-plane`);
 	if (typeof sideName !== "undefined") {
 		coloring[sideName] = sidePosition;
-		side.classList.add(sidePosition + "-color");
+		side.classList.add(`${sidePosition}-color`);
 	}
 	
 	//side.innerHTML = "<div><span>" + sideName + "</span></div>";
@@ -194,11 +191,10 @@ function createSide(cubie, cubieName, sidePosition) {
 }
 
 function createCubie(cubieName) {
-	var cubie = document.createElement("div");
-	cubie.className = cubieName + " cubie";
+	const cubie = document.createElement("div");
+	cubie.className = `${cubieName} cubie`;
 	
-	for (var index = 0; index < sidesPositions.length; index++)
-		createSide(cubie, cubieName, sidesPositions[index]);
+	for (let index = 0; index < sidesPositions.length; index++) {createSide(cubie, cubieName, sidesPositions[index]);}
 
 	cube.appendChild(cubie);
 }
@@ -225,8 +221,7 @@ function init() {
 	body.addEventListener("mouseup", mouseup, false);
 	body.addEventListener("mousemove", mousemove, false);*/
 
-	for (var index = 0; index < cubies.length; index++)
-		createCubie(cubies[index]);
+	for (let index = 0; index < cubies.length; index++) {createCubie(cubies[index]);}
 
 	createPlane();
 }
@@ -235,9 +230,11 @@ init();
 
 /* turning */
 
-var turning = false,
-	curX, curY,
-	deltaX = 0, deltaY = 0;
+let turning = false;
+let curX;
+let curY;
+let deltaX = 0;
+let deltaY = 0;
 
 function mousedown(e) {
 	turning = true;
@@ -256,12 +253,12 @@ function mousemove(e) {
 		curX = e.pageX;
 		curY = e.pageY;
 		
-		var x = -(e.pageY - deltaY) * 0.7,
+		const x = -(e.pageY - deltaY) * 0.7,
 			y = -(e.pageX - deltaX) * 0.7;
 		turn(x, y);
 	}
 }
 
 function turn(newX, newY) {
-	cube.style.webkitTransform = "rotateX(" + newX + "deg) rotateY(" + newY + "deg)";
+	cube.style.webkitTransform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
 }
