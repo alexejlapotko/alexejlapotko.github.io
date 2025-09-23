@@ -1,12 +1,14 @@
 module.exports = {
 	plugins: [
 		require("autoprefixer")({
-			// Support last 2 versions of all browsers
+			// Include older browsers to ensure webkit prefixes are added
 			overrideBrowserslist: [
-				"last 2 versions",
-				"> 1%",
+				"last 4 versions",
+				"> 0.5%",
 				"not dead",
-				"not ie <= 11"
+				"Chrome >= 30",
+				"Safari >= 6",
+				"iOS >= 7"
 			]
 		}),
 		require("cssnano")({
