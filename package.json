@@ -6,11 +6,19 @@
   "scripts": {
     "lint": "eslint *.js",
     "lint:fix": "eslint *.js --fix",
-    "lint:check": "eslint --print-config cube.js"
+    "lint:check": "eslint --print-config cube.js",
+    "css:build": "postcss cube.css -o dist/cube.css",
+    "css:watch": "postcss cube.css -o dist/cube.css --watch",
+    "build": "npm run css:build",
+    "dev": "npm run css:watch"
   },
   "packageManager": "pnpm@9.0.0",
   "devDependencies": {
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "postcss": "^8.4.35",
+    "autoprefixer": "^10.4.17",
+    "postcss-cli": "^11.0.0",
+    "cssnano": "^6.0.3"
   },
   "keywords": ["rubiks-cube", "3d", "javascript", "css3"],
   "author": "",

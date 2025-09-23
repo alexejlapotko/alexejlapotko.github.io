@@ -5,15 +5,17 @@ This repository uses the modern GitHub Pages deployment approach with GitHub Act
 ## How It Works
 
 ### Main Branch Deployment
-1. **When code is pushed to main**: Automatically deploys the latest version to your GitHub Pages site
-2. **Production URL**: Your main site is available at your GitHub Pages URL
-3. **Modern approach**: Uses GitHub Actions deployment (no gh-pages branch needed)
+1. **When code is pushed to main**: Automatically builds CSS and deploys the latest version to your GitHub Pages site
+2. **Build Process**: Runs PostCSS with Autoprefixer to generate optimized CSS from modern source
+3. **Production URL**: Your main site is available at your GitHub Pages URL
+4. **Modern approach**: Uses GitHub Actions deployment (no gh-pages branch needed)
 
 ### PR Preview Deployment  
-1. **When a PR is opened/updated**: A GitHub Action automatically deploys the PR changes to a unique URL
-2. **Preview URL**: Each PR gets its own preview at: `https://[your-pages-url]/pr-previews/pr-[number]/`
-3. **Automatic comments**: The bot comments on each PR with the preview link
-4. **Integrated deployment**: Both main site and PR previews are deployed together
+1. **When a PR is opened/updated**: A GitHub Action automatically builds CSS and deploys the PR changes to a unique URL
+2. **Build Process**: Same PostCSS build process ensures PR previews match production
+3. **Preview URL**: Each PR gets its own preview at: `https://[your-pages-url]/pr-previews/pr-[number]/`
+4. **Automatic comments**: The bot comments on each PR with the preview link
+5. **Integrated deployment**: Both main site and PR previews are deployed together
 
 ## Setup Instructions
 
@@ -102,16 +104,17 @@ If you see "Missing environment" error:
 You can customize the workflows by editing:
 
 ### Main Branch Deployment (`.github/workflows/deploy-main.yml`)
+- ✅ **CSS Build Process**: Automatically builds CSS with PostCSS and Autoprefixer
 - Add build steps for frameworks (React, Vue, etc.)
 - Modify file copying logic
 - Add pre-deployment checks
 
 ### PR Preview Deployment (`.github/workflows/pr-preview.yml`)
+- ✅ **CSS Build Process**: Automatically builds CSS with PostCSS and Autoprefixer
 - Change the trigger branches
 - Modify the preview directory structure  
 - Customize the PR comment format
 - Customize the preview index page styling
-- Add build steps if needed
 
 ## Architecture
 
