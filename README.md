@@ -35,11 +35,6 @@ pnpm run lint:fix
 pnpm run lint:check
 ```
 
-### Browser Compatibility
-- ✅ Chrome 12+
-- ✅ Firefox 16+
-- ✅ Safari 9+
-- ✅ Edge 12+
 
 
 ## 📝 License
