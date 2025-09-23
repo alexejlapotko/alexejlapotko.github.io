@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "script"
+  },
+  "rules": {
+    "indent": ["warn", "tab", { "SwitchCase": 1 }],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["warn", "double", { "allowTemplateLiterals": true }],
+    "semi": ["error", "always"],
+    "no-unused-vars": ["warn", { "args": "none" }],
+    "no-console": "off",
+    "no-undef": "error",
+    "no-redeclare": "warn",
+    "no-implicit-globals": "off",
+    "prefer-const": "off",
+    "no-var": "off",
+    "no-prototype-builtins": "warn",
+    "eqeqeq": ["warn", "smart"],
+    "curly": ["warn", "multi-line"],
+    "brace-style": ["warn", "1tbs", { "allowSingleLine": true }]
+  },
+  "globals": {
+    "console": "readonly",
+    "document": "readonly",
+    "window": "readonly"
+  }
+}

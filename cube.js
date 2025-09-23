@@ -23,7 +23,7 @@ function updateColor(sideName, newColor) {
 
 
 function updateColoring(newColoring) {
-	for (side in newColoring)
+	for (var side in newColoring)
 		if (coloring[side] != newColoring[side])
 			updateColor(side, newColoring[side]);
 }
@@ -88,7 +88,7 @@ var rotations = {
 			"rbd": "dbl", "dbr": "lbd", "dbl": "lbu", "lbd": "ubl"
 		}
 	}
-}
+};
 
 var rotation,
 	rotType, rotBack,
