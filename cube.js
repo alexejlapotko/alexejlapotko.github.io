@@ -30,7 +30,8 @@ function updateColoring(newColoring) {
 	
 /* rotation */
 
-const rotations = {
+// Rotation configurations - currently unused but kept for future functionality
+/* const rotations = {
 	"f" : {
 		"cubies" : ["flu", "fld", "fru", "frd"],
 		"recolor": {
@@ -88,23 +89,25 @@ const rotations = {
 			"rbd": "dbl", "dbr": "lbd", "dbl": "lbu", "lbd": "ubl"
 		}
 	}
-};
+}; */
 
 let rotation;
-let rotType;
+// let rotType; // Currently unused
 let rotBack;
-let rotating = false;
+// let rotating = false; // Currently unused
 let rotCubies = [];
 
-function getCubie(cubieName) {
-	return cube.getElementsByClassName(cubieName)[0];
-}
+// Currently unused but kept for future functionality
+// function getCubie(cubieName) {
+// 	return cube.getElementsByClassName(cubieName)[0];
+// }
 
-function attachToPlane() {
-	for (let index = 0; index < rotCubies.length; index++) {
-		plane.appendChild(rotCubies[index]);
-	}
-}
+// Currently unused but kept for future functionality
+// function attachToPlane() {
+// 	for (let index = 0; index < rotCubies.length; index++) {
+// 		plane.appendChild(rotCubies[index]);
+// 	}
+// }
 
 function detachToPlane() {
 	for (let index = 0; index < rotCubies.length; index++) {
@@ -112,15 +115,16 @@ function detachToPlane() {
 	}
 }
 
-function startRotation() {
-	rotCubies = [];
-	for (let index = 0; index < rotation.cubies.length; index++) {rotCubies.push(getCubie(rotation.cubies[index]));}
+// Currently unused but kept for future functionality
+// function startRotation() {
+// 	rotCubies = [];
+// 	for (let index = 0; index < rotation.cubies.length; index++) {rotCubies.push(getCubie(rotation.cubies[index]));}
 
-	rotating = true;
-	
-	attachToPlane();
-	plane.className = `moving ${rotType}${rotBack ? "-back" : ""}`;
-}
+// 	rotating = true;
+// 	
+// 	attachToPlane();
+// 	plane.className = `moving ${rotType}${rotBack ? "-back" : ""}`;
+// }
 
 function clone(obj) {
 	if(obj == null || typeof(obj) != "object") {return obj;}
@@ -149,18 +153,19 @@ function endRotation() {
 	
 	updateColoring(makeNewColoring());
 	
-	rotating = false;
+	// rotating = false; // Currently unused
 	rotCubies = [];
 }
 
-function rotate(move) {	
-	rotType = move[0];
-	rotation = rotations[rotType];
-	rotBack = (move[1] === "'");
-	
-	console.log(`rotation ${move}`);
-	if (!rotating) startRotation(move);
-}
+// Rotation function - currently unused but kept for future functionality
+// function rotate(move) {	
+// 	rotType = move[0];
+// 	rotation = rotations[rotType];
+// 	rotBack = (move[1] === "'");
+// 	
+// 	console.log(`rotation ${move}`);
+// 	if (!rotating) startRotation(move);
+// }
 
 /* initialization */
 
@@ -230,35 +235,38 @@ init();
 
 /* turning */
 
-let turning = false;
-let curX;
-let curY;
-let deltaX = 0;
-let deltaY = 0;
+// Mouse interaction variables - currently unused but kept for future functionality
+// let turning = false;
+// let curX;
+// let curY;
+// const deltaX = 0;
+// const deltaY = 0;
 
-function mousedown(e) {
-	turning = true;
-	if (typeof curX !== "undefined") {
-		deltaX = curX - e.pageX;
-		deltaY = curY - e.pageY;
-	}
-}
+// Mouse event handlers - currently unused but kept for future functionality
+// function mousedown(e) {
+// 	turning = true;
+// 	if (typeof curX !== "undefined") {
+// 		deltaX = curX - e.pageX;
+// 		deltaY = curY - e.pageY;
+// 	}
+// }
 
-function mouseup() {
-	turning = false;
-}
+// function mouseup() {
+// 	turning = false;
+// }
 		
-function mousemove(e) {
-	if (turning) {
-		curX = e.pageX;
-		curY = e.pageY;
-		
-		const x = -(e.pageY - deltaY) * 0.7,
-			y = -(e.pageX - deltaX) * 0.7;
-		turn(x, y);
-	}
-}
+// function mousemove(e) {
+// 	if (turning) {
+// 		curX = e.pageX;
+// 		curY = e.pageY;
+// 		
+// 		const x = -(e.pageY - deltaY) * 0.7,
+// 			y = -(e.pageX - deltaX) * 0.7;
+// 		turn(x, y);
+// 	}
+// }
 
-function turn(newX, newY) {
-	cube.style.webkitTransform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
-}
+// Currently unused but kept for future functionality
+// function turn(newX, newY) {
+// 	cube.style.webkitTransform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
+// }
