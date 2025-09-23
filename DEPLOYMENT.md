@@ -1,97 +1,136 @@
-# PR Preview Deployment Setup
+# Modern GitHub Pages Deployment Setup
 
-This repository is configured to automatically create preview deployments for every pull request using GitHub Actions and GitHub Pages.
+This repository uses the modern GitHub Pages deployment approach with GitHub Actions for both main branch deployments and PR previews.
 
 ## How It Works
 
+### Main Branch Deployment
+1. **When code is pushed to main**: Automatically deploys the latest version to your GitHub Pages site
+2. **Production URL**: Your main site is available at your GitHub Pages URL
+3. **Modern approach**: Uses GitHub Actions deployment (no gh-pages branch needed)
+
+### PR Preview Deployment  
 1. **When a PR is opened/updated**: A GitHub Action automatically deploys the PR changes to a unique URL
-2. **Preview URL**: Each PR gets its own preview at:
-   - Personal repo (`username.github.io`): `https://[username].github.io/pr-previews/pr-[number]/`
-   - Project repo: `https://[username].github.io/[repo-name]/pr-previews/pr-[number]/`
+2. **Preview URL**: Each PR gets its own preview at: `https://[your-pages-url]/pr-previews/pr-[number]/`
 3. **Automatic comments**: The bot comments on each PR with the preview link
-4. **Cleanup**: When a PR is closed, the preview is automatically removed
+4. **Integrated deployment**: Both main site and PR previews are deployed together
 
 ## Setup Instructions
 
-### 1. Enable GitHub Pages
+### 1. Enable GitHub Pages (Modern Method)
 1. Go to your repository settings
-2. Navigate to "Pages" in the left sidebar
-3. Under "Source", select "Deploy from a branch"
-4. Choose "gh-pages" branch and "/ (root)" folder
-5. Click "Save"
+2. Navigate to "Pages" in the left sidebar  
+3. Under "Source", select "GitHub Actions"
+4. Click "Save"
 
-### 2. Configure Repository Permissions
+### 2. Configure Environment Protection Rules
+1. Go to Settings → Environments
+2. Click on "github-pages" environment (or create it if it doesn't exist)
+3. Under "Deployment branches and tags":
+   - Select "Selected branches and tags"
+   - Add rule for `main` branch
+   - Add rule for `refs/pull/*/merge` (for PR previews)
+4. Click "Save protection rules"
+
+**Important**: This step is crucial to avoid "Branch not allowed to deploy" errors.
+
+### 3. Configure Repository Permissions
 1. Go to Settings → Actions → General
 2. Under "Workflow permissions", select "Read and write permissions"
 3. Check "Allow GitHub Actions to create and approve pull requests"
 4. Click "Save"
 
-**Important**: If you're using a personal repository (like `username.github.io`), you may need to:
-- Go to Settings → Developer settings → Personal access tokens
-- Create a token with `repo` and `workflow` permissions
-- Add it as a repository secret named `GITHUB_TOKEN` (though this is usually automatic)
-
-### 3. Create gh-pages Branch (if it doesn't exist)
-```bash
-# Create an empty gh-pages branch
-git checkout --orphan gh-pages
-git rm -rf .
-echo "# GitHub Pages" > README.md
-git add README.md
-git commit -m "Initial gh-pages commit"
-git push origin gh-pages
-git checkout main  # or master
-```
-
 ## Usage
 
+### Main Branch Deployment
+1. **Push to main**: Push changes to the main branch
+2. **Automatic deployment**: The site deploys automatically to your GitHub Pages URL
+3. **No manual steps**: Everything is handled by GitHub Actions
+
+### PR Preview Deployment
 1. **Create a PR**: Open a pull request as usual
 2. **Wait for deployment**: The GitHub Action will run automatically (takes ~1-2 minutes)
 3. **Get preview link**: Check the PR comments for the preview URL
 4. **Updates**: Push new changes to the PR branch - the preview updates automatically
-5. **Cleanup**: When you close/merge the PR, the preview is automatically removed
+5. **Integrated experience**: Both main site and PR preview are available from the same deployment
 
-## Preview URLs
+## URLs
 
-### For Personal Repositories (`username.github.io`)
-- **Individual PR**: `https://[username].github.io/pr-previews/pr-[number]/`
-- **All previews**: `https://[username].github.io/pr-previews/`
-
-### For Project Repositories
-- **Individual PR**: `https://[username].github.io/[repo-name]/pr-previews/pr-[number]/`
-- **All previews**: `https://[username].github.io/[repo-name]/pr-previews/`
+- **Main site**: `https://[your-github-pages-url]/`
+- **Individual PR preview**: `https://[your-github-pages-url]/pr-previews/pr-[number]/`
+- **All previews index**: `https://[your-github-pages-url]/pr-previews/`
 
 ## Features
 
-✅ Automatic deployment on PR open/update  
-✅ Unique URL for each PR  
-✅ Automatic PR comments with preview links  
-✅ Automatic cleanup when PR is closed  
-✅ Index page showing all active previews  
-✅ Updates existing comments instead of creating new ones  
+✅ **Modern GitHub Actions deployment** - No gh-pages branch needed  
+✅ **Automatic main branch deployment** - Push to main = instant deployment  
+✅ **Integrated PR previews** - Main site and previews in one deployment  
+✅ **Automatic PR comments** with preview links  
+✅ **Beautiful preview index page** with navigation  
+✅ **Environment protection rule compatible** - No deployment restrictions  
+✅ **Updates existing comments** instead of creating new ones  
 
 ## Troubleshooting
 
 ### Action fails with permissions error
 - Ensure "Read and write permissions" are enabled in Actions settings
-- Check that GitHub Pages is enabled and set to gh-pages branch
+- Check that GitHub Pages is set to "GitHub Actions" (not "Deploy from a branch")
 
 ### Preview not updating
 - Check the Actions tab for any failed workflows
-- Ensure the gh-pages branch exists and is accessible
+- Ensure GitHub Pages source is set to "GitHub Actions"
 
 ### Preview shows 404
 - Wait a few minutes after the action completes (GitHub Pages can take time to update)
-- Check that the files were correctly copied to the gh-pages branch
+- Check that the deployment completed successfully in the Actions tab
+
+### Environment protection rules error
+If you see "Branch not allowed to deploy to github-pages due to environment protection rules":
+1. Go to Settings → Environments → github-pages
+2. Under "Deployment branches and tags", ensure you have:
+   - `main` branch allowed
+   - `refs/pull/*/merge` pattern allowed (for PR previews)
+3. Save the protection rules
+
+### Missing environment error
+If you see "Missing environment" error:
+- The workflows now correctly specify the `github-pages` environment
+- Ensure the environment exists in your repository settings
 
 ## Customization
 
-You can customize the workflow by editing `.github/workflows/pr-preview.yml`:
+You can customize the workflows by editing:
 
+### Main Branch Deployment (`.github/workflows/deploy-main.yml`)
+- Add build steps for frameworks (React, Vue, etc.)
+- Modify file copying logic
+- Add pre-deployment checks
+
+### PR Preview Deployment (`.github/workflows/pr-preview.yml`)
 - Change the trigger branches
-- Modify the preview directory structure
+- Modify the preview directory structure  
 - Customize the PR comment format
-- Add build steps if needed (e.g., for frameworks like React, Vue, etc.)
+- Customize the preview index page styling
+- Add build steps if needed
+
+## Architecture
+
+### Modern Approach Benefits
+- **No gh-pages branch management** - Everything handled by GitHub Actions
+- **Single deployment per PR** - Both main site and preview in one artifact
+- **Environment protection compatible** - No environment restrictions
+- **Simpler maintenance** - Fewer moving parts, more reliable
+
+### File Structure
+```
+Deployed Site:
+├── index.html (main site)
+├── *.css, *.js (main site assets)
+└── pr-previews/
+    ├── index.html (preview navigation)
+    └── pr-[number]/
+        └── [PR files]
+```
 
 ## Security Note
 
