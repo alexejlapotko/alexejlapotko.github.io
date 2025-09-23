@@ -153,6 +153,7 @@ function endRotation() {
 	rotCubies = [];
 }
 
+// eslint-disable-next-line no-unused-vars
 function rotate(move) {	
 	rotType = move[0];
 	rotation = rotations[rotType];
@@ -236,6 +237,7 @@ let curY;
 let deltaX = 0;
 let deltaY = 0;
 
+// eslint-disable-next-line no-unused-vars
 function mousedown(e) {
 	turning = true;
 	if (typeof curX !== "undefined") {
@@ -244,10 +246,12 @@ function mousedown(e) {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars
 function mouseup() {
 	turning = false;
 }
-		
+
+// eslint-disable-next-line no-unused-vars
 function mousemove(e) {
 	if (turning) {
 		curX = e.pageX;
