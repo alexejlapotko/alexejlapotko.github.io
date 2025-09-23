@@ -1,6 +1,34 @@
+:root {
+	/* 3D Cube Variables */
+	--cube-perspective: 800px;
+	--cube-size: 200px;
+	--cubie-size: 100px;
+	--transition-duration: 0.3s;
+	
+	/* Color Palette */
+	--color-blue: #0066cc;
+	--color-green: #00cc66;
+	--color-red: #cc0000;
+	--color-orange: #ff6600;
+	--color-white: #ffffff;
+	--color-yellow: #ffcc00;
+	--color-black: #000000;
+	
+	/* Button Styling */
+	--button-bg: rgba(0, 0, 0, 0.3);
+	--button-bg-hover: #3498db;
+	--button-text: #ffffff;
+	--button-radius: 10px;
+	--button-size: 20px;
+	--button-padding: 10px;
+	
+	/* Responsive Breakpoints */
+	--mobile-breakpoint: 768px;
+}
+
 body {
-	-webkit-perspective: 800px;
-	-webkit-perspective-origin: center -100px;
+	perspective: var(--cube-perspective);
+	perspective-origin: center -100px;
 }
 
 #container {
@@ -10,33 +38,32 @@ body {
 
 #cube {
 	margin: 100px auto 0;
-
-	-webkit-transform-style: preserve-3d;
-	-webkit-transform: rotateX(-15deg) rotateY(45deg);
+	transform-style: preserve-3d;
+	transform: rotateX(-15deg) rotateY(45deg);
 }
 
-@-webkit-keyframes cube_rotate {
+@keyframes cube_rotate {
 	100% {
-		-webkit-transform: rotateY(360deg);
+		transform: rotateY(360deg);
 	}
 }
 
 #cube {
-	width: 200px;
-	height: 200px;
+	width: var(--cube-size);
+	height: var(--cube-size);
 }
 
 #cube .cubie {
-	width: 100px;
-	height: 100px;
+	width: var(--cubie-size);
+	height: var(--cubie-size);
 	margin: 50px 50px;
 	position: absolute;
-	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
 }
 
 #cube .side {
-	width: 100px;
-	height: 100px;
+	width: var(--cubie-size);
+	height: var(--cubie-size);
 	position: absolute;
 	background: black;
 	border-radius: 1px;
@@ -58,117 +85,117 @@ body {
 /* rotating */
 
 #cube #plane {
-	-webkit-transform-style: preserve-3d;
-	-webkit-transform-origin: 100px 100px;
+	transform-style: preserve-3d;
+	transform-origin: 100px 100px;
 }
 
 #plane.moving {
-	-webkit-transition: all .3s ease-out;	
+	transition: all var(--transition-duration) ease-out;
 }
 
 #plane.moving.f, #plane.moving.z {
-    -webkit-transform: rotateZ(90deg);
+    transform: rotateZ(90deg);
 }
 
 #plane.moving.f-back, #plane.moving.z-back {
-    -webkit-transform: rotateZ(-90deg);
+    transform: rotateZ(-90deg);
 }
 
 #plane.moving.l, #plane.moving.x {
-	-webkit-transform: rotateX(-90deg);
+	transform: rotateX(-90deg);
 }
 
 #plane.moving.l-back, #plane.moving.x-back {
-	-webkit-transform: rotateX(90deg);
+	transform: rotateX(90deg);
 }
 
 #plane.moving.u, #plane.moving.y {
-	-webkit-transform: rotateY(-90deg);
+	transform: rotateY(-90deg);
 }
 
 #plane.moving.u-back, #plane.moving.y-back {
-	-webkit-transform: rotateY(90deg);
+	transform: rotateY(90deg);
 }
 
 /* cubies positions */
 
 #cube .cubie.flu {
-	-webkit-transform: translateZ(50px) translateX(-50px) translateY(-50px);
+	transform: translateZ(50px) translateX(-50px) translateY(-50px);
 }
 
 #cube .cubie.fld {
-	-webkit-transform: translateZ(50px) translateX(-50px) translateY(50px);
+	transform: translateZ(50px) translateX(-50px) translateY(50px);
 }
 
 #cube .cubie.fru {
-	-webkit-transform: translateZ(50px) translateX(50px) translateY(-50px);
+	transform: translateZ(50px) translateX(50px) translateY(-50px);
 }
 
 #cube .cubie.frd {
-	-webkit-transform: translateZ(50px) translateX(50px) translateY(50px);
+	transform: translateZ(50px) translateX(50px) translateY(50px);
 }
 
 #cube .cubie.blu {
-	-webkit-transform: translateZ(-50px) translateX(-50px) translateY(-50px);
+	transform: translateZ(-50px) translateX(-50px) translateY(-50px);
 }
 
 #cube .cubie.bld {
-	-webkit-transform: translateZ(-50px) translateX(-50px) translateY(50px);
+	transform: translateZ(-50px) translateX(-50px) translateY(50px);
 }
 
 #cube .cubie.bru {
-	-webkit-transform: translateZ(-50px) translateX(50px) translateY(-50px);
+	transform: translateZ(-50px) translateX(50px) translateY(-50px);
 }
 
 #cube .cubie.brd {
-	-webkit-transform: translateZ(-50px) translateX(50px) translateY(50px);
+	transform: translateZ(-50px) translateX(50px) translateY(50px);
 }
 
 /* sides positions */
 
 #cube .side.f-plane {
-	-webkit-transform: translateZ(50px);
+	transform: translateZ(50px);
 }
 
 #cube .side.b-plane {
-	-webkit-transform: translateZ(-50px) rotateY(180deg);
+	transform: translateZ(-50px) rotateY(180deg);
 }
 
 #cube .side.l-plane {
-	-webkit-transform: translateX(-50px) rotateY(-90deg);
+	transform: translateX(-50px) rotateY(-90deg);
 }
 
 #cube .side.r-plane {
-	-webkit-transform: translateX(50px) rotateY(90deg);
+	transform: translateX(50px) rotateY(90deg);
 }
 
 #cube .side.u-plane {
-	-webkit-transform: translateY(-50px) rotateX(90deg);
+	transform: translateY(-50px) rotateX(90deg);
 }
 
 #cube .side.d-plane {
-	-webkit-transform: translateY(50px) rotateX(-90deg);
+	transform: translateY(50px) rotateX(-90deg);
 }
 
 /* sides colors */
 
 #cube .side.f-color>div {
-	background: blue;
+	background: var(--color-blue);
 }
 #cube .side.b-color>div {
-	background: green;
+	background: var(--color-green);
 }
 #cube .side.l-color>div {
-	background: red;
+	background: var(--color-red);
 }
 #cube .side.r-color>div {
-	background: orange;
+	background: var(--color-orange);
 }
 #cube .side.u-color>div {
-	background: white;
+	background: var(--color-white);
 }
 #cube .side.d-color>div {
-	background: yellow;
+	background: var(--color-yellow);
 }
 
 /* buttons */
@@ -185,24 +212,108 @@ body {
 }
 
 .rotate_button {
-	width: 20px;
-	height: 20px;
-
+	width: var(--button-size);
+	height: var(--button-size);
 	cursor: pointer;
-	
-	background: rgba(0, 0, 0, 0.3);	
-  	border-radius: 10px;
-  	font-family: Arial;
-  	color: #ffffff;
-  	font-size: 20px;
-  	text-align: center;
-  	-webkit-user-select: none;
-
-  	padding: 10px;
-  	display: inline-block;
-  	margin: 0 5px;
+	background: var(--button-bg);
+	border-radius: var(--button-radius);
+	font-family: system-ui, -apple-system, sans-serif;
+	color: var(--button-text);
+	font-size: 20px;
+	text-align: center;
+	user-select: none;
+	padding: var(--button-padding);
+	display: inline-block;
+	margin: 0 5px;
+	border: none;
+	transition: background-color var(--transition-duration) ease;
 }
 
 .rotate_button:hover, .rotate_button:active {
-	background: #3498db;
+	background: var(--button-bg-hover);
+	transform: scale(1.05);
+}
+
+/* Modern CSS Features */
+
+/* Container Queries Support (when available) */
+@container (max-width: 400px) {
+	#cube {
+		width: calc(var(--cube-size) * 0.8);
+		height: calc(var(--cube-size) * 0.8);
+	}
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	:root {
+		--cube-size: 150px;
+		--cubie-size: 75px;
+		--button-size: 16px;
+		--button-padding: 8px;
+	}
+	
+	body {
+		perspective: calc(var(--cube-perspective) * 0.8);
+	}
+	
+	#cube {
+		margin: 50px auto 0;
+	}
+	
+	.rotate_button {
+		font-size: 16px;
+		margin: 0 3px;
+	}
+}
+
+@media (max-width: 480px) {
+	:root {
+		--cube-size: 120px;
+		--cubie-size: 60px;
+	}
+	
+	#but_cont, #but_cont_back {
+		margin: 10px 0;
+	}
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--transition-duration: 0.01ms;
+	}
+	
+	#plane.moving {
+		transition: none;
+	}
+	
+	.rotate_button {
+		transition: none;
+	}
+	
+	.rotate_button:hover {
+		transform: none;
+	}
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+	:root {
+		--button-bg: #000000;
+		--button-bg-hover: #ffffff;
+		--button-text: #ffffff;
+	}
+	
+	.rotate_button:hover {
+		color: #000000;
+	}
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #1a1a1a;
+		color: #ffffff;
+	}
 }
