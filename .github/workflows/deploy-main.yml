@@ -102,8 +102,8 @@ jobs:
           cp *.html _site/ 2>/dev/null || true
           cp *.js _site/ 2>/dev/null || true
           
-          # Copy built CSS from dist directory
-          cp -r dist _site/ 2>/dev/null || true
+          # Copy built CSS to root (overwriting source CSS)
+          cp dist/cube.css _site/cube.css 2>/dev/null || true
           
           # Copy common directories if they exist
           cp -r assets _site/ 2>/dev/null || true

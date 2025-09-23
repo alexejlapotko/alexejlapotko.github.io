@@ -103,7 +103,9 @@ jobs:
           # Copy main site files to root (for main branch access)
           cp *.html _site/ 2>/dev/null || true
           cp *.js _site/ 2>/dev/null || true
-          cp -r dist _site/ 2>/dev/null || true
+          
+          # Copy built CSS to root (overwriting source CSS)
+          cp dist/cube.css _site/cube.css 2>/dev/null || true
           cp -r assets _site/ 2>/dev/null || true
           cp -r images _site/ 2>/dev/null || true
           cp -r styles _site/ 2>/dev/null || true
@@ -114,7 +116,9 @@ jobs:
           # Copy PR preview files to preview directory
           cp *.html _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
           cp *.js _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp -r dist _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          
+          # Copy built CSS to preview directory
+          cp dist/cube.css _site/pr-previews/pr-${{ github.event.number }}/cube.css 2>/dev/null || true
           cp -r assets _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
           cp -r images _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
           cp -r styles _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true

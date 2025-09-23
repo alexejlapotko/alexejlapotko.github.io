@@ -38,7 +38,9 @@ pnpm run dev
 ### CSS Build Process
 This project uses PostCSS with Autoprefixer for modern CSS support:
 - **Source**: `cube.css` (modern CSS with custom properties)
-- **Output**: `dist/cube.css` (browser-compatible, minified)
+- **Build Output**: `dist/cube.css` (browser-compatible, minified) - *not committed to repo*
+- **Development**: Uses source CSS directly
+- **Production**: GitHub Actions builds and deploys optimized CSS
 - **Features**: Automatic vendor prefixing, CSS custom properties, responsive design
 
 ### Available Scripts
