@@ -1,0 +1,237 @@
+name: PR Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [main, master]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Create preview directory
+        run: |
+          mkdir -p preview-temp
+          # Copy only the necessary files (not .github directory)
+          cp *.html *.css *.js preview-temp/ 2>/dev/null || true
+          cp -r assets preview-temp/ 2>/dev/null || true
+          cp -r images preview-temp/ 2>/dev/null || true
+          cp -r styles preview-temp/ 2>/dev/null || true
+          cp -r scripts preview-temp/ 2>/dev/null || true
+          
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Update gh-pages with preview
+        run: |
+          # Create pr-previews directory if it doesn't exist
+          mkdir -p gh-pages/pr-previews/pr-${{ github.event.number }}
+          
+          # Copy preview files
+          cp -r preview-temp/* gh-pages/pr-previews/pr-${{ github.event.number }}/
+          
+          # Create or update index file for previews
+          cat > gh-pages/pr-previews/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>PR Previews - 3D Rubik's Cube</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  .preview-item { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+                  .preview-item h3 { margin-top: 0; }
+                  .preview-link { display: inline-block; padding: 10px 20px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; }
+                  .preview-link:hover { background: #005a87; }
+              </style>
+          </head>
+          <body>
+              <h1>PR Previews - 3D Rubik's Cube</h1>
+              <p>Available preview deployments:</p>
+          EOF
+          
+          # List all PR directories
+          for dir in gh-pages/pr-previews/pr-*/; do
+              if [ -d "$dir" ]; then
+                  pr_num=$(basename "$dir" | sed 's/pr-//')
+                  echo "<div class='preview-item'>" >> gh-pages/pr-previews/index.html
+                  echo "<h3>PR #$pr_num</h3>" >> gh-pages/pr-previews/index.html
+                  echo "<a href='pr-$pr_num/' class='preview-link'>View Preview</a>" >> gh-pages/pr-previews/index.html
+                  echo "</div>" >> gh-pages/pr-previews/index.html
+              fi
+          done
+          
+          echo "</body></html>" >> gh-pages/pr-previews/index.html
+          
+      - name: Commit and push to gh-pages
+        run: |
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Add/Update preview for PR #${{ github.event.number }}" || exit 0
+          git push
+          
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+            
+            // Check if this is a personal GitHub Pages repo (username.github.io)
+            const isPersonalRepo = repoName === `${repoOwner}.github.io`;
+            const previewUrl = isPersonalRepo 
+              ? `https://${repoOwner}.github.io/pr-previews/pr-${prNumber}/`
+              : `https://${repoOwner}.github.io/${repoName}/pr-previews/pr-${prNumber}/`;
+            
+            // Check if we already commented
+            const comments = await github.rest.issues.listComments({
+              owner: repoOwner,
+              repo: repoName,
+              issue_number: prNumber,
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🚀 Preview deployment')
+            );
+            
+            const commentBody = `🚀 **Preview deployment ready!**
+            
+            Your changes are now available for preview at:
+            **${previewUrl}**
+            
+            This preview will be updated automatically when you push new changes to this PR.
+            
+            ---
+            *Preview deployments are automatically cleaned up when the PR is closed.*`;
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: repoOwner,
+                repo: repoName,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: repoOwner,
+                repo: repoName,
+                issue_number: prNumber,
+                body: commentBody
+              });
+            }
+
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Remove preview
+        run: |
+          rm -rf pr-previews/pr-${{ github.event.number }}
+          
+          # Update index file
+          if [ -d "pr-previews" ]; then
+            cat > pr-previews/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>PR Previews - 3D Rubik's Cube</title>
+              <style>
+                  body { font-family: Arial, sans-serif; margin: 40px; }
+                  .preview-item { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+                  .preview-item h3 { margin-top: 0; }
+                  .preview-link { display: inline-block; padding: 10px 20px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; }
+                  .preview-link:hover { background: #005a87; }
+              </style>
+          </head>
+          <body>
+              <h1>PR Previews - 3D Rubik's Cube</h1>
+              <p>Available preview deployments:</p>
+          EOF
+            
+            # List remaining PR directories
+            for dir in pr-previews/pr-*/; do
+                if [ -d "$dir" ]; then
+                    pr_num=$(basename "$dir" | sed 's/pr-//')
+                    echo "<div class='preview-item'>" >> pr-previews/index.html
+                    echo "<h3>PR #$pr_num</h3>" >> pr-previews/index.html
+                    echo "<a href='pr-$pr_num/' class='preview-link'>View Preview</a>" >> pr-previews/index.html
+                    echo "</div>" >> pr-previews/index.html
+                fi
+            done
+            
+            echo "</body></html>" >> pr-previews/index.html
+          fi
+          
+      - name: Commit and push cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Remove preview for closed PR #${{ github.event.number }}" || exit 0
+          git push
+          
+      - name: Update PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+            
+            // Find and update the bot comment
+            const comments = await github.rest.issues.listComments({
+              owner: repoOwner,
+              repo: repoName,
+              issue_number: prNumber,
+            });
+            
+            const botComment = comments.data.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('🚀 Preview deployment')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: repoOwner,
+                repo: repoName,
+                comment_id: botComment.id,
+                body: `🚀 **Preview deployment**
+                
+                ✅ Preview has been cleaned up as this PR was closed.
+                
+                ---
+                *Preview deployments are automatically cleaned up when the PR is closed.*`
+              });
+            }
