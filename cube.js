@@ -153,11 +153,6 @@ function endRotation() {
 	rotCubies = [];
 }
 
-/**
- * Rotates the cube according to the specified move notation.
- * Called from HTML button click handlers.
- * @param {string} move - The rotation move (e.g., "f", "l'", "u", etc.)
- */
 // eslint-disable-next-line no-unused-vars
 function rotate(move) {	
 	rotType = move[0];
