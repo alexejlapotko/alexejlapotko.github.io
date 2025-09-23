@@ -1,6 +1,51 @@
+/* Modern CSS with fallbacks */
 body {
+	perspective: 800px;
+	perspective-origin: center -100px;
+	/* Fallback for older browsers */
 	-webkit-perspective: 800px;
 	-webkit-perspective-origin: center -100px;
+	
+	margin: 0;
+	padding: 20px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	min-height: 100vh;
+	color: #333;
+}
+
+/* Header styling */
+header {
+	text-align: center;
+	margin-bottom: 20px;
+	color: white;
+}
+
+header h1 {
+	margin: 0 0 10px 0;
+	font-size: 2.5em;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+	margin: 0;
+	opacity: 0.9;
+	font-size: 1.1em;
+}
+
+/* Main content */
+main {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+/* Footer styling */
+footer {
+	text-align: center;
+	margin-top: 30px;
+	color: white;
+	opacity: 0.8;
+	font-size: 0.9em;
 }
 
 #container {
@@ -10,7 +55,9 @@ body {
 
 #cube {
 	margin: 100px auto 0;
-
+	transform-style: preserve-3d;
+	transform: rotateX(-15deg) rotateY(45deg);
+	/* Fallback for older browsers */
 	-webkit-transform-style: preserve-3d;
 	-webkit-transform: rotateX(-15deg) rotateY(45deg);
 }
@@ -31,6 +78,8 @@ body {
 	height: 100px;
 	margin: 50px 50px;
 	position: absolute;
+	transform-style: preserve-3d;
+	/* Fallback for older browsers */
 	-webkit-transform-style: preserve-3d;
 }
 
@@ -58,95 +107,120 @@ body {
 /* rotating */
 
 #cube #plane {
+	transform-style: preserve-3d;
+	transform-origin: 100px 100px;
+	/* Fallback for older browsers */
 	-webkit-transform-style: preserve-3d;
 	-webkit-transform-origin: 100px 100px;
 }
 
 #plane.moving {
-	-webkit-transition: all .3s ease-out;	
+	transition: all .3s ease-out;
+	/* Fallback for older browsers */
+	-webkit-transition: all .3s ease-out;
 }
 
 #plane.moving.f, #plane.moving.z {
-    -webkit-transform: rotateZ(90deg);
+	transform: rotateZ(90deg);
+	-webkit-transform: rotateZ(90deg);
 }
 
 #plane.moving.f-back, #plane.moving.z-back {
-    -webkit-transform: rotateZ(-90deg);
+	transform: rotateZ(-90deg);
+	-webkit-transform: rotateZ(-90deg);
 }
 
 #plane.moving.l, #plane.moving.x {
+	transform: rotateX(-90deg);
 	-webkit-transform: rotateX(-90deg);
 }
 
 #plane.moving.l-back, #plane.moving.x-back {
+	transform: rotateX(90deg);
 	-webkit-transform: rotateX(90deg);
 }
 
 #plane.moving.u, #plane.moving.y {
+	transform: rotateY(-90deg);
 	-webkit-transform: rotateY(-90deg);
 }
 
 #plane.moving.u-back, #plane.moving.y-back {
+	transform: rotateY(90deg);
 	-webkit-transform: rotateY(90deg);
 }
 
 /* cubies positions */
 
 #cube .cubie.flu {
+	transform: translateZ(50px) translateX(-50px) translateY(-50px);
 	-webkit-transform: translateZ(50px) translateX(-50px) translateY(-50px);
 }
 
 #cube .cubie.fld {
+	transform: translateZ(50px) translateX(-50px) translateY(50px);
 	-webkit-transform: translateZ(50px) translateX(-50px) translateY(50px);
 }
 
 #cube .cubie.fru {
+	transform: translateZ(50px) translateX(50px) translateY(-50px);
 	-webkit-transform: translateZ(50px) translateX(50px) translateY(-50px);
 }
 
 #cube .cubie.frd {
+	transform: translateZ(50px) translateX(50px) translateY(50px);
 	-webkit-transform: translateZ(50px) translateX(50px) translateY(50px);
 }
 
 #cube .cubie.blu {
+	transform: translateZ(-50px) translateX(-50px) translateY(-50px);
 	-webkit-transform: translateZ(-50px) translateX(-50px) translateY(-50px);
 }
 
 #cube .cubie.bld {
+	transform: translateZ(-50px) translateX(-50px) translateY(50px);
 	-webkit-transform: translateZ(-50px) translateX(-50px) translateY(50px);
 }
 
 #cube .cubie.bru {
+	transform: translateZ(-50px) translateX(50px) translateY(-50px);
 	-webkit-transform: translateZ(-50px) translateX(50px) translateY(-50px);
 }
 
 #cube .cubie.brd {
+	transform: translateZ(-50px) translateX(50px) translateY(50px);
 	-webkit-transform: translateZ(-50px) translateX(50px) translateY(50px);
 }
 
 /* sides positions */
 
 #cube .side.f-plane {
+	transform: translateZ(50px);
 	-webkit-transform: translateZ(50px);
 }
 
 #cube .side.b-plane {
+	transform: translateZ(-50px) rotateY(180deg);
 	-webkit-transform: translateZ(-50px) rotateY(180deg);
 }
 
 #cube .side.l-plane {
+	transform: translateX(-50px) rotateY(-90deg);
 	-webkit-transform: translateX(-50px) rotateY(-90deg);
 }
 
 #cube .side.r-plane {
+	transform: translateX(50px) rotateY(90deg);
 	-webkit-transform: translateX(50px) rotateY(90deg);
 }
 
 #cube .side.u-plane {
+	transform: translateY(-50px) rotateX(90deg);
 	-webkit-transform: translateY(-50px) rotateX(90deg);
 }
 
 #cube .side.d-plane {
+	transform: translateY(50px) rotateX(-90deg);
 	-webkit-transform: translateY(50px) rotateX(-90deg);
 }
 
@@ -171,38 +245,95 @@ body {
 	background: yellow;
 }
 
-/* buttons */
+/* Controls styling */
+.controls {
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	margin-top: 30px;
+	flex-wrap: wrap;
+}
+
+.button-group {
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	border-radius: 15px;
+	padding: 20px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.button-group h3 {
+	margin: 0 0 15px 0;
+	color: white;
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: 600;
+}
 
 #but_cont, #but_cont_back {
-	height: 40px;
-	width: 100%;
-	position: relative;
-
-	display: block;
-	text-align: center;
-
-	margin: 5px 0;
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	flex-wrap: wrap;
 }
 
 .rotate_button {
-	width: 20px;
-	height: 20px;
-
+	width: 45px;
+	height: 45px;
 	cursor: pointer;
-	
-	background: rgba(0, 0, 0, 0.3);	
-  	border-radius: 10px;
-  	font-family: Arial;
-  	color: #ffffff;
-  	font-size: 20px;
-  	text-align: center;
-  	-webkit-user-select: none;
-
-  	padding: 10px;
-  	display: inline-block;
-  	margin: 0 5px;
+	background: rgba(255, 255, 255, 0.2);
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	border-radius: 12px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+	line-height: 41px;
+	user-select: none;
+	-webkit-user-select: none;
+	transition: all 0.2s ease;
+	backdrop-filter: blur(5px);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.rotate_button:hover, .rotate_button:active {
-	background: #3498db;
+.rotate_button:hover {
+	background: rgba(255, 255, 255, 0.3);
+	border-color: rgba(255, 255, 255, 0.5);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.rotate_button:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	background: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+	.controls {
+		flex-direction: column;
+		gap: 20px;
+	}
+	
+	.button-group {
+		padding: 15px;
+	}
+	
+	.rotate_button {
+		width: 40px;
+		height: 40px;
+		font-size: 14px;
+		line-height: 36px;
+	}
+	
+	header h1 {
+		font-size: 2em;
+	}
+	
+	#container {
+		height: 300px;
+	}
 }
