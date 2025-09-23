@@ -1,0 +1,31 @@
+{
+  "name": "3d-rubiks-cube",
+  "version": "1.0.0",
+  "description": "A 3D Rubik's Cube implementation using modern ES6+ JavaScript",
+  "type": "module",
+  "main": "cube.js",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "dev": "npx http-server . -p 8080 -o --cors",
+    "lint": "npx eslint *.js",
+    "format": "npx prettier --write *.js *.html *.css"
+  },
+  "keywords": [
+    "rubiks-cube",
+    "3d",
+    "javascript",
+    "es6",
+    "css3",
+    "html5"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "http-server": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
