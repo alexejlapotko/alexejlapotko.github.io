@@ -98,7 +98,12 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const repoOwner = context.repo.owner;
             const repoName = context.repo.repo;
-            const previewUrl = `https://${repoOwner}.github.io/${repoName}/pr-previews/pr-${prNumber}/`;
+            
+            // Check if this is a personal GitHub Pages repo (username.github.io)
+            const isPersonalRepo = repoName === `${repoOwner}.github.io`;
+            const previewUrl = isPersonalRepo 
+              ? `https://${repoOwner}.github.io/pr-previews/pr-${prNumber}/`
+              : `https://${repoOwner}.github.io/${repoName}/pr-previews/pr-${prNumber}/`;
             
             // Check if we already commented
             const comments = await github.rest.issues.listComments({

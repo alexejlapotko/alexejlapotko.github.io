@@ -5,7 +5,9 @@ This repository is configured to automatically create preview deployments for ev
 ## How It Works
 
 1. **When a PR is opened/updated**: A GitHub Action automatically deploys the PR changes to a unique URL
-2. **Preview URL**: Each PR gets its own preview at `https://[username].github.io/[repo-name]/pr-previews/pr-[number]/`
+2. **Preview URL**: Each PR gets its own preview at:
+   - Personal repo (`username.github.io`): `https://[username].github.io/pr-previews/pr-[number]/`
+   - Project repo: `https://[username].github.io/[repo-name]/pr-previews/pr-[number]/`
 3. **Automatic comments**: The bot comments on each PR with the preview link
 4. **Cleanup**: When a PR is closed, the preview is automatically removed
 
@@ -51,6 +53,11 @@ git checkout main  # or master
 
 ## Preview URLs
 
+### For Personal Repositories (`username.github.io`)
+- **Individual PR**: `https://[username].github.io/pr-previews/pr-[number]/`
+- **All previews**: `https://[username].github.io/pr-previews/`
+
+### For Project Repositories
 - **Individual PR**: `https://[username].github.io/[repo-name]/pr-previews/pr-[number]/`
 - **All previews**: `https://[username].github.io/[repo-name]/pr-previews/`
 
