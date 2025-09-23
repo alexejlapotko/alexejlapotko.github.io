@@ -14,18 +14,13 @@
   },
   "packageManager": "pnpm@9.0.0",
   "devDependencies": {
-    "autoprefixer": "^10.4.17",
-    "cssnano": "^6.0.3",
     "eslint": "^8.57.0",
     "postcss": "^8.4.35",
-    "postcss-cli": "^11.0.0"
+    "autoprefixer": "^10.4.17",
+    "postcss-cli": "^11.0.0",
+    "cssnano": "^6.0.3"
   },
-  "keywords": [
-    "rubiks-cube",
-    "3d",
-    "javascript",
-    "css3"
-  ],
+  "keywords": ["rubiks-cube", "3d", "javascript", "css3"],
   "author": "",
   "license": "MIT"
 }

@@ -153,6 +153,12 @@ function endRotation() {
 	rotCubies = [];
 }
 
+/**
+ * Rotates the cube according to the specified move notation.
+ * Called from HTML button click handlers.
+ * @param {string} move - The rotation move (e.g., "f", "l'", "u", etc.)
+ */
+// eslint-disable-next-line no-unused-vars
 function rotate(move) {	
 	rotType = move[0];
 	rotation = rotations[rotType];
@@ -227,41 +233,3 @@ function init() {
 }
 
 init();
-
-/* turning */
-
-// Mouse interaction variables - currently unused but kept for future functionality
-// let turning = false;
-// let curX;
-// let curY;
-// const deltaX = 0;
-// const deltaY = 0;
-
-// Mouse event handlers - currently unused but kept for future functionality
-// function mousedown(e) {
-// 	turning = true;
-// 	if (typeof curX !== "undefined") {
-// 		deltaX = curX - e.pageX;
-// 		deltaY = curY - e.pageY;
-// 	}
-// }
-
-// function mouseup() {
-// 	turning = false;
-// }
-		
-// function mousemove(e) {
-// 	if (turning) {
-// 		curX = e.pageX;
-// 		curY = e.pageY;
-// 		
-// 		const x = -(e.pageY - deltaY) * 0.7,
-// 			y = -(e.pageX - deltaX) * 0.7;
-// 		turn(x, y);
-// 	}
-// }
-
-// Currently unused but kept for future functionality
-// function turn(newX, newY) {
-// 	cube.style.webkitTransform = `rotateX(${newX}deg) rotateY(${newY}deg)`;
-// }
