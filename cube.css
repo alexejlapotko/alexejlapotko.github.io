@@ -5,13 +5,13 @@
 	--cubie-size: 100px;
 	--transition-duration: 0.3s;
 	
-	/* Color Palette */
-	--color-blue: #0066cc;
-	--color-green: #00cc66;
-	--color-red: #cc0000;
-	--color-orange: #ff6600;
-	--color-white: #ffffff;
-	--color-yellow: #ffcc00;
+	/* Color Palette - Original Rubik's Cube Colors */
+	--color-blue: blue;
+	--color-green: green;
+	--color-red: red;
+	--color-orange: orange;
+	--color-white: white;
+	--color-yellow: yellow;
 	--color-black: #000000;
 	
 	/* Button Styling */
