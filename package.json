@@ -8,6 +8,7 @@
     "lint:fix": "eslint *.js --fix",
     "lint:check": "eslint --print-config cube.js"
   },
+  "packageManager": "pnpm@9.0.0",
   "devDependencies": {
     "eslint": "^8.57.0"
   },
