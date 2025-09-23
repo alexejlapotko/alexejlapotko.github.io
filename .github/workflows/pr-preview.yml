@@ -6,10 +6,15 @@ on:
     branches: [main, master]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
   pull-requests: write
+
+# Allow only one concurrent deployment per PR
+concurrency:
+  group: "pages-pr-${{ github.event.number }}"
+  cancel-in-progress: true
 
 jobs:
   deploy-preview:
@@ -19,77 +24,97 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
-      - name: Create preview directory
+      - name: Create preview site structure
         run: |
-          mkdir -p preview-temp
-          # Copy only the necessary files (not .github directory)
-          cp *.html *.css *.js preview-temp/ 2>/dev/null || true
-          cp -r assets preview-temp/ 2>/dev/null || true
-          cp -r images preview-temp/ 2>/dev/null || true
-          cp -r styles preview-temp/ 2>/dev/null || true
-          cp -r scripts preview-temp/ 2>/dev/null || true
+          # Create the main site structure
+          mkdir -p _site/pr-previews/pr-${{ github.event.number }}
           
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Copy main site files to root (for main branch access)
+          cp *.html _site/ 2>/dev/null || true
+          cp *.css _site/ 2>/dev/null || true  
+          cp *.js _site/ 2>/dev/null || true
+          cp -r assets _site/ 2>/dev/null || true
+          cp -r images _site/ 2>/dev/null || true
+          cp -r styles _site/ 2>/dev/null || true
+          cp -r scripts _site/ 2>/dev/null || true
+          cp -r fonts _site/ 2>/dev/null || true
+          cp -r media _site/ 2>/dev/null || true
           
-      - name: Update gh-pages with preview
-        run: |
-          # Create pr-previews directory if it doesn't exist
-          mkdir -p gh-pages/pr-previews/pr-${{ github.event.number }}
+          # Copy PR preview files to preview directory
+          cp *.html _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp *.css _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true  
+          cp *.js _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp -r assets _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp -r images _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp -r styles _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp -r scripts _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp -r fonts _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+          cp -r media _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
           
-          # Copy preview files
-          cp -r preview-temp/* gh-pages/pr-previews/pr-${{ github.event.number }}/
-          
-          # Create or update index file for previews
-          cat > gh-pages/pr-previews/index.html << 'EOF'
+          # Create PR previews index page
+          mkdir -p _site/pr-previews
+          cat > _site/pr-previews/index.html << 'EOF'
           <!DOCTYPE html>
           <html>
           <head>
               <title>PR Previews - 3D Rubik's Cube</title>
               <style>
-                  body { font-family: Arial, sans-serif; margin: 40px; }
-                  .preview-item { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-                  .preview-item h3 { margin-top: 0; }
-                  .preview-link { display: inline-block; padding: 10px 20px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; }
+                  body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+                  .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                  h1 { color: #333; border-bottom: 3px solid #007cba; padding-bottom: 10px; }
+                  .preview-item { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; }
+                  .preview-item h3 { margin-top: 0; color: #007cba; }
+                  .preview-link { display: inline-block; padding: 10px 20px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px; }
                   .preview-link:hover { background: #005a87; }
+                  .main-link { background: #28a745; }
+                  .main-link:hover { background: #1e7e34; }
+                  .no-previews { text-align: center; color: #666; font-style: italic; padding: 40px; }
               </style>
           </head>
           <body>
-              <h1>PR Previews - 3D Rubik's Cube</h1>
-              <p>Available preview deployments:</p>
+              <div class="container">
+                  <h1>🚀 3D Rubik's Cube - Deployments</h1>
+                  
+                  <div class="preview-item">
+                      <h3>🏠 Main Site</h3>
+                      <p>The main production version of the site.</p>
+                      <a href="../" class="preview-link main-link">View Main Site</a>
+                  </div>
+                  
+                  <h2>📋 PR Previews</h2>
+                  <div class="preview-item">
+                      <h3>PR #${{ github.event.number }}</h3>
+                      <p>Preview for the current pull request changes.</p>
+                      <a href="pr-${{ github.event.number }}/" class="preview-link">View Preview</a>
+                  </div>
+                  
+                  <p><em>This page shows the current PR preview. When deployed to production, it will show all active PR previews.</em></p>
+              </div>
+          </body>
+          </html>
           EOF
           
-          # List all PR directories
-          for dir in gh-pages/pr-previews/pr-*/; do
-              if [ -d "$dir" ]; then
-                  pr_num=$(basename "$dir" | sed 's/pr-//')
-                  echo "<div class='preview-item'>" >> gh-pages/pr-previews/index.html
-                  echo "<h3>PR #$pr_num</h3>" >> gh-pages/pr-previews/index.html
-                  echo "<a href='pr-$pr_num/' class='preview-link'>View Preview</a>" >> gh-pages/pr-previews/index.html
-                  echo "</div>" >> gh-pages/pr-previews/index.html
-              fi
-          done
+          # Ensure we have an index.html in the main site
+          if [ ! -f "_site/index.html" ]; then
+            echo "Error: No index.html found in the repository root"
+            exit 1
+          fi
           
-          echo "</body></html>" >> gh-pages/pr-previews/index.html
+          echo "Preview site structure created:"
+          find _site -type f | head -20
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
           
-      - name: Commit and push to gh-pages
-        run: |
-          cd gh-pages
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Add/Update preview for PR #${{ github.event.number }}" || exit 0
-          git push
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
           
       - name: Comment on PR
         uses: actions/github-script@v7
@@ -99,11 +124,10 @@ jobs:
             const repoOwner = context.repo.owner;
             const repoName = context.repo.repo;
             
-            // Check if this is a personal GitHub Pages repo (username.github.io)
-            const isPersonalRepo = repoName === `${repoOwner}.github.io`;
-            const previewUrl = isPersonalRepo 
-              ? `https://${repoOwner}.github.io/pr-previews/pr-${prNumber}/`
-              : `https://${repoOwner}.github.io/${repoName}/pr-previews/pr-${prNumber}/`;
+            // Get the deployment URL from the previous step
+            const deploymentUrl = '${{ steps.deployment.outputs.page_url }}';
+            const previewUrl = `${deploymentUrl}pr-previews/pr-${prNumber}/`;
+            const previewIndexUrl = `${deploymentUrl}pr-previews/`;
             
             // Check if we already commented
             const comments = await github.rest.issues.listComments({
@@ -122,10 +146,13 @@ jobs:
             Your changes are now available for preview at:
             **${previewUrl}**
             
+            📋 **All previews**: ${previewIndexUrl}
+            🏠 **Main site**: ${deploymentUrl}
+            
             This preview will be updated automatically when you push new changes to this PR.
             
             ---
-            *Preview deployments are automatically cleaned up when the PR is closed.*`;
+            *Using modern GitHub Pages deployment - previews are managed automatically.*`;
             
             if (botComment) {
               // Update existing comment
@@ -149,59 +176,7 @@ jobs:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     
-    steps:
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Remove preview
-        run: |
-          rm -rf pr-previews/pr-${{ github.event.number }}
-          
-          # Update index file
-          if [ -d "pr-previews" ]; then
-            cat > pr-previews/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-              <title>PR Previews - 3D Rubik's Cube</title>
-              <style>
-                  body { font-family: Arial, sans-serif; margin: 40px; }
-                  .preview-item { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-                  .preview-item h3 { margin-top: 0; }
-                  .preview-link { display: inline-block; padding: 10px 20px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; }
-                  .preview-link:hover { background: #005a87; }
-              </style>
-          </head>
-          <body>
-              <h1>PR Previews - 3D Rubik's Cube</h1>
-              <p>Available preview deployments:</p>
-          EOF
-            
-            # List remaining PR directories
-            for dir in pr-previews/pr-*/; do
-                if [ -d "$dir" ]; then
-                    pr_num=$(basename "$dir" | sed 's/pr-//')
-                    echo "<div class='preview-item'>" >> pr-previews/index.html
-                    echo "<h3>PR #$pr_num</h3>" >> pr-previews/index.html
-                    echo "<a href='pr-$pr_num/' class='preview-link'>View Preview</a>" >> pr-previews/index.html
-                    echo "</div>" >> pr-previews/index.html
-                fi
-            done
-            
-            echo "</body></html>" >> pr-previews/index.html
-          fi
-          
-      - name: Commit and push cleanup
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Remove preview for closed PR #${{ github.event.number }}" || exit 0
-          git push
-          
+    steps:      
       - name: Update PR comment
         uses: actions/github-script@v7
         with:
@@ -232,6 +207,6 @@ jobs:
                 ✅ Preview has been cleaned up as this PR was closed.
                 
                 ---
-                *Preview deployments are automatically cleaned up when the PR is closed.*`
+                *Using modern GitHub Pages deployment - previews are managed automatically.*`
               });
             }
