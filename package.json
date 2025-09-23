@@ -1,0 +1,18 @@
+{
+  "name": "rubiks-cube-3d",
+  "version": "1.0.0",
+  "description": "3D Rubik's Cube implementation in JavaScript",
+  "main": "cube.js",
+  "scripts": {
+    "lint": "eslint *.js",
+    "lint:fix": "eslint *.js --fix",
+    "lint:check": "eslint --print-config cube.js"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  },
+  "keywords": ["rubiks-cube", "3d", "javascript", "css3"],
+  "author": "",
+  "license": "MIT"
+}

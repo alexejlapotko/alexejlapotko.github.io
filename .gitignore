@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Package manager files
+pnpm-debug.log*
+
+# ESLint cache
+.eslintcache
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
