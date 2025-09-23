@@ -23,15 +23,22 @@ This repository uses the modern GitHub Pages deployment approach with GitHub Act
 3. Under "Source", select "GitHub Actions"
 4. Click "Save"
 
-**Important**: Do NOT use "Deploy from a branch" - use "GitHub Actions" for the modern approach.
+### 2. Configure Environment Protection Rules
+1. Go to Settings → Environments
+2. Click on "github-pages" environment (or create it if it doesn't exist)
+3. Under "Deployment branches and tags":
+   - Select "Selected branches and tags"
+   - Add rule for `main` branch
+   - Add rule for `refs/pull/*/merge` (for PR previews)
+4. Click "Save protection rules"
 
-### 2. Configure Repository Permissions
+**Important**: This step is crucial to avoid "Branch not allowed to deploy" errors.
+
+### 3. Configure Repository Permissions
 1. Go to Settings → Actions → General
 2. Under "Workflow permissions", select "Read and write permissions"
 3. Check "Allow GitHub Actions to create and approve pull requests"
 4. Click "Save"
-
-**Note**: The modern approach doesn't require personal access tokens or manual gh-pages branch creation.
 
 ## Usage
 
@@ -78,8 +85,17 @@ This repository uses the modern GitHub Pages deployment approach with GitHub Act
 - Check that the deployment completed successfully in the Actions tab
 
 ### Environment protection rules error
-- This setup avoids environment protection issues by using direct GitHub Actions deployment
-- No need to modify environment protection rules
+If you see "Branch not allowed to deploy to github-pages due to environment protection rules":
+1. Go to Settings → Environments → github-pages
+2. Under "Deployment branches and tags", ensure you have:
+   - `main` branch allowed
+   - `refs/pull/*/merge` pattern allowed (for PR previews)
+3. Save the protection rules
+
+### Missing environment error
+If you see "Missing environment" error:
+- The workflows now correctly specify the `github-pages` environment
+- Ensure the environment exists in your repository settings
 
 ## Customization
 
