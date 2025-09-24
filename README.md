@@ -24,7 +24,7 @@ The repository separates source files from generated assets so it's clear what s
 - `src/index.html` – main HTML entry point with button wiring
 - `src/js/cube.js` – JavaScript logic that renders and animates the cube
 - `src/styles/cube.css` – authoring CSS before PostCSS processing
-- `public/` – compiled/static assets ready to be served (populated via `pnpm run build`)
+- `public/` – compiled/static assets ready to be served (generated via `pnpm run build` and excluded from version control)
 
 
 ## 🛠️ Development
@@ -38,7 +38,7 @@ The repository separates source files from generated assets so it's clear what s
 # Install dependencies
 pnpm install
 
-# Build assets (required for first run, populates `public/`)
+# Build assets (required for first run, populates the git-ignored `public/` directory)
 pnpm run build
 
 # For development (watches CSS changes)
@@ -53,7 +53,7 @@ open public/index.html         # macOS
 ### CSS Build Process
 This project uses PostCSS with Autoprefixer for cross-browser compatibility:
 - **Source**: `src/styles/cube.css` (modern CSS without vendor prefixes)
-- **Build Output**: `public/styles/cube.css` (autoprefixed, minified)
+- **Build Output**: `public/styles/cube.css` (autoprefixed, minified, generated on demand)
 - **Development**: Uses source CSS directly
 - **Production**: GitHub Actions builds and deploys autoprefixed CSS
 - **Features**: Automatic vendor prefixing for older browsers
