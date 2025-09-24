@@ -10,7 +10,7 @@
   ],
   "parserOptions": {
     "ecmaVersion": 2022,
-    "sourceType": "script"
+    "sourceType": "module"
   },
   "rules": {
     "indent": ["warn", "tab", { "SwitchCase": 1 }],

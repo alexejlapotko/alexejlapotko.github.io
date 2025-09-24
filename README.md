@@ -21,8 +21,10 @@ A fully interactive 3D Rubik's Cube implementation built with pure JavaScript an
 
 The repository separates source files from generated assets so it's clear what should be edited versus what is produced by the build pipeline:
 
-- `src/index.html` – main HTML entry point with button wiring
+- `src/index.html` – main HTML entry point that loads the module-based scripts
+- `src/js/main.js` – orchestrates cube rendering and button initialization
 - `src/js/cube.js` – JavaScript logic that renders and animates the cube
+- `src/js/buttons.js` – builds the rotation controls
 - `src/styles/cube.css` – authoring CSS before PostCSS processing
 - `public/` – compiled/static assets ready to be served (generated via `pnpm run build` and excluded from version control)
 

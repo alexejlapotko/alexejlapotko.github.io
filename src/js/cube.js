@@ -153,12 +153,11 @@ function endRotation() {
 	rotCubies = [];
 }
 
-// eslint-disable-next-line no-unused-vars
-function rotate(move) {	
+export function rotate(move) {
 	rotType = move[0];
 	rotation = rotations[rotType];
 	rotBack = (move[1] === "'");
-	
+
 	console.log(`rotation ${move}`);
 	if (!rotating) startRotation(move);
 }
@@ -209,11 +208,11 @@ function createPlane() {
 	plane.addEventListener("webkitTransitionEnd", endRotation, false);
 }
 
-function init() {
+export function initCube() {
 	cube = document.createElement("div");
 	cube.id = "cube";
 	container.appendChild(cube);
-	
+
 	/*cube.addEventListener("mousedown", mousedown, false);
 	cube.addEventListener("mouseup", mouseup, false);
 	cube.addEventListener("mousemove", mousemove, false);
@@ -226,8 +225,6 @@ function init() {
 
 	createPlane();
 }
-
-init();
 
 /* turning */
 
