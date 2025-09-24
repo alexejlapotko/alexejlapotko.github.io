@@ -17,6 +17,16 @@ A fully interactive 3D Rubik's Cube implementation built with pure JavaScript an
 - **Pure Vanilla JS**: No external dependencies required
 
 
+## 📁 Project Structure
+
+The repository separates source files from generated assets so it's clear what should be edited versus what is produced by the build pipeline:
+
+- `src/index.html` – main HTML entry point with button wiring
+- `src/js/cube.js` – JavaScript logic that renders and animates the cube
+- `src/styles/cube.css` – authoring CSS before PostCSS processing
+- `public/` – compiled/static assets ready to be served (populated via `pnpm run build`)
+
+
 ## 🛠️ Development
 
 ### Prerequisites
@@ -28,17 +38,22 @@ A fully interactive 3D Rubik's Cube implementation built with pure JavaScript an
 # Install dependencies
 pnpm install
 
-# Build CSS (required for first run)
+# Build assets (required for first run, populates `public/`)
 pnpm run build
 
 # For development (watches CSS changes)
 pnpm run dev
+
+# Open the site (adjust for your OS)
+open public/index.html         # macOS
+# xdg-open public/index.html   # Linux
+# start public\\index.html     # Windows PowerShell
 ```
 
 ### CSS Build Process
 This project uses PostCSS with Autoprefixer for cross-browser compatibility:
-- **Source**: `cube.css` (modern CSS without vendor prefixes)
-- **Build Output**: `dist/cube.css` (autoprefixed, minified) - *not committed to repo*
+- **Source**: `src/styles/cube.css` (modern CSS without vendor prefixes)
+- **Build Output**: `public/styles/cube.css` (autoprefixed, minified)
 - **Development**: Uses source CSS directly
 - **Production**: GitHub Actions builds and deploys autoprefixed CSS
 - **Features**: Automatic vendor prefixing for older browsers

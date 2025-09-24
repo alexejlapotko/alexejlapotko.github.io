@@ -6,13 +6,13 @@ This repository uses the modern GitHub Pages deployment approach with GitHub Act
 
 ### Main Branch Deployment
 1. **When code is pushed to main**: Automatically builds CSS and deploys the latest version to your GitHub Pages site
-2. **Build Process**: Runs PostCSS with Autoprefixer to generate optimized CSS from modern source
+2. **Build Process**: Copies HTML/JS from `src/` and runs PostCSS with Autoprefixer to generate optimized CSS in `public/`
 3. **Production URL**: Your main site is available at your GitHub Pages URL
 4. **Modern approach**: Uses GitHub Actions deployment (no gh-pages branch needed)
 
 ### PR Preview Deployment  
 1. **When a PR is opened/updated**: A GitHub Action automatically builds CSS and deploys the PR changes to a unique URL
-2. **Build Process**: Same PostCSS build process ensures PR previews match production
+2. **Build Process**: Same copy + PostCSS build process ensures PR previews match production-ready assets in `public/`
 3. **Preview URL**: Each PR gets its own preview at: `https://[your-pages-url]/pr-previews/pr-[number]/`
 4. **Automatic comments**: The bot comments on each PR with the preview link
 5. **Integrated deployment**: Both main site and PR previews are deployed together
@@ -126,13 +126,15 @@ You can customize the workflows by editing:
 
 ### File Structure
 ```
-Deployed Site:
-├── index.html (main site)
-├── *.css, *.js (main site assets)
-└── pr-previews/
-    ├── index.html (preview navigation)
-    └── pr-[number]/
-        └── [PR files]
+Repository:
+├── public/
+│   ├── index.html         # Deployment-ready site root
+│   ├── js/cube.js         # Copied from src/js/
+│   └── styles/cube.css    # PostCSS output
+└── src/
+    ├── index.html         # Authoring HTML
+    ├── js/cube.js         # Source JavaScript
+    └── styles/cube.css    # Source CSS
 ```
 
 ## Security Note
