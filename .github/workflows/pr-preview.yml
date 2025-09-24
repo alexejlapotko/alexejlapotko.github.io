@@ -89,42 +89,34 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         
-      - name: Build CSS
-        run: pnpm run css:build
+      - name: Build site
+        run: pnpm run build
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
       - name: Create preview site structure
         run: |
-          # Create the main site structure
+          build_dir="public"
+
+          if [ ! -d "$build_dir" ]; then
+            echo "Error: Build output directory '$build_dir' was not created"
+            exit 1
+          fi
+
+          if [ ! -f "$build_dir/index.html" ]; then
+            echo "Error: No index.html found in $build_dir"
+            exit 1
+          fi
+
+          mkdir -p _site
           mkdir -p _site/pr-previews/pr-${{ github.event.number }}
-          
-          # Copy main site files to root (for main branch access)
-          cp *.html _site/ 2>/dev/null || true
-          cp *.js _site/ 2>/dev/null || true
-          
-          # Copy built CSS to root (overwriting source CSS)
-          cp dist/cube.css _site/cube.css 2>/dev/null || true
-          cp -r assets _site/ 2>/dev/null || true
-          cp -r images _site/ 2>/dev/null || true
-          cp -r styles _site/ 2>/dev/null || true
-          cp -r scripts _site/ 2>/dev/null || true
-          cp -r fonts _site/ 2>/dev/null || true
-          cp -r media _site/ 2>/dev/null || true
-          
-          # Copy PR preview files to preview directory
-          cp *.html _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp *.js _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          
-          # Copy built CSS to preview directory
-          cp dist/cube.css _site/pr-previews/pr-${{ github.event.number }}/cube.css 2>/dev/null || true
-          cp -r assets _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp -r images _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp -r styles _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp -r scripts _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp -r fonts _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
-          cp -r media _site/pr-previews/pr-${{ github.event.number }}/ 2>/dev/null || true
+
+          # Copy the built site to the main deployment directory
+          cp -R "$build_dir"/. _site/
+
+          # Copy the same built site into the PR-specific preview directory
+          cp -R "$build_dir"/. _site/pr-previews/pr-${{ github.event.number }}/
           
           # Create PR previews index page
           mkdir -p _site/pr-previews
@@ -171,7 +163,7 @@ jobs:
           
           # Ensure we have an index.html in the main site
           if [ ! -f "_site/index.html" ]; then
-            echo "Error: No index.html found in the repository root"
+            echo "Error: Failed to copy index.html into _site/"
             exit 1
           fi
           

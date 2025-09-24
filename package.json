@@ -10,8 +10,8 @@
     "css:build": "mkdir -p public/styles && postcss src/styles/cube.css -o public/styles/cube.css",
     "css:watch": "mkdir -p public/styles && postcss src/styles/cube.css -o public/styles/cube.css --watch",
     "copy:assets": "mkdir -p public/js && cp src/index.html public/index.html && cp src/js/cube.js public/js/cube.js",
-    "build": "npm run copy:assets && npm run css:build",
-    "dev": "npm run copy:assets && npm run css:watch"
+    "build": "pnpm run copy:assets && pnpm run css:build",
+    "dev": "pnpm run copy:assets && pnpm run css:watch"
   },
   "packageManager": "pnpm@9.0.0",
   "devDependencies": {
