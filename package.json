@@ -2,14 +2,14 @@
   "name": "rubiks-cube-3d",
   "version": "1.0.0",
   "description": "3D Rubik's Cube implementation in JavaScript",
-  "main": "src/js/cube.js",
+  "main": "src/js/main.js",
   "scripts": {
     "lint": "eslint \"src/js/**/*.js\"",
     "lint:fix": "eslint \"src/js/**/*.js\" --fix",
     "lint:check": "eslint --print-config src/js/cube.js",
     "css:build": "mkdir -p public/styles && postcss src/styles/cube.css -o public/styles/cube.css",
     "css:watch": "mkdir -p public/styles && postcss src/styles/cube.css -o public/styles/cube.css --watch",
-    "copy:assets": "mkdir -p public/js && cp src/index.html public/index.html && cp src/js/cube.js public/js/cube.js",
+    "copy:assets": "mkdir -p public/js && cp src/index.html public/index.html && cp -r src/js/. public/js/",
     "build": "pnpm run copy:assets && pnpm run css:build",
     "dev": "pnpm run copy:assets && pnpm run css:watch"
   },
